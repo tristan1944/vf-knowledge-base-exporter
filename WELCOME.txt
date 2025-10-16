@@ -1,0 +1,122 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║              🚀  VOICEFLOW KNOWLEDGE BASE MANAGER  🚀                        ║
+║                                                                              ║
+║              A complete Python solution for managing your                   ║
+║              Voiceflow Knowledge Base via API                               ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📦 WHAT'S INCLUDED:
+
+   ✓ Python Library (voiceflow_kb.py)
+     - Upload documents (PDF, TXT, DOCX)
+     - Upload URLs
+     - Upload tables with custom schemas
+     - Query with natural language
+     - Full CRUD operations
+
+   ✓ Command-Line Interface (kb_cli.py)
+     - Easy-to-use CLI for all operations
+     - Supports JSON and text output
+     - Interactive and scriptable
+
+   ✓ Complete Documentation
+     - README.md - Full API reference
+     - QUICKSTART.md - 5-minute guide
+     - PROJECT_SUMMARY.md - Overview
+     - examples/README.md - Templates
+
+   ✓ Testing & Examples
+     - test_connection.py - Verify setup
+     - example_usage.py - Code examples
+     - Sample JSON files for tables
+
+
+🎯 QUICK START:
+
+   1. Install dependencies:
+      $ pip install -r requirements.txt
+
+   2. Test your connection:
+      $ python test_connection.py
+
+   3. Try a query:
+      $ python kb_cli.py query "Hello!"
+
+   4. Upload a document:
+      $ python kb_cli.py upload-file document.pdf
+
+   5. List your documents:
+      $ python kb_cli.py list
+
+
+📚 YOUR CONFIGURATION:
+
+   Project ID: 66aeff0ea380c590e96e8e70
+   API Key: VF.DM.68e6a156911014714892eee8.Yeb3HK3luekO31gR
+
+   Already configured and ready to use!
+
+
+🔧 COMMON COMMANDS:
+
+   Query:           python kb_cli.py query "Your question"
+   Upload File:     python kb_cli.py upload-file file.pdf
+   Upload URL:      python kb_cli.py upload-url "https://example.com"
+   List Docs:       python kb_cli.py list
+   Delete Doc:      python kb_cli.py delete <doc-id>
+   Get Help:        python kb_cli.py --help
+
+
+💡 USE IN PYTHON:
+
+   from voiceflow_kb import VoiceflowKB
+   
+   kb = VoiceflowKB(
+       api_key="VF.DM.68e6a156911014714892eee8.Yeb3HK3luekO31gR",
+       project_id="66aeff0ea380c590e96e8e70"
+   )
+   
+   result = kb.query("What can you tell me?")
+   print(result['output'])
+
+
+📖 DOCUMENTATION:
+
+   • README.md - Complete reference (start here!)
+   • QUICKSTART.md - Fast intro with examples
+   • PROJECT_SUMMARY.md - Technical overview
+   • examples/ - Templates and examples
+
+
+🆘 NEED HELP?
+
+   1. Check QUICKSTART.md for common tasks
+   2. Review example_usage.py for code samples
+   3. Visit: https://developer.voiceflow.com/
+   4. Join Discord: https://discord.gg/voiceflow
+
+
+✨ FEATURES:
+
+   ✓ Multiple upload types (files, URLs, tables)
+   ✓ Advanced query filtering with metadata
+   ✓ Full document lifecycle management
+   ✓ Both library and CLI interfaces
+   ✓ Comprehensive examples and docs
+   ✓ Error handling and validation
+   ✓ Production-ready code
+
+
+🎉 YOU'RE ALL SET!
+
+   Start with:  python test_connection.py
+   Then read:   QUICKSTART.md
+
+   Happy knowledge base building! 🚀
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  For updates and support, visit: https://developer.voiceflow.com/          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+

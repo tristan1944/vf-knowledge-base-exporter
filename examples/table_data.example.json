@@ -1,0 +1,48 @@
+[
+  {
+    "product_id": 1,
+    "name": "Premium Widget",
+    "price": 29.99,
+    "description": "High-quality widget perfect for everyday use. Durable construction and 2-year warranty included.",
+    "categories": ["hardware", "tools", "bestseller"],
+    "in_stock": true,
+    "rating": 4.5
+  },
+  {
+    "product_id": 2,
+    "name": "Deluxe Widget",
+    "price": 49.99,
+    "description": "Premium widget with advanced features including automatic calibration and smart connectivity.",
+    "categories": ["hardware", "premium", "smart"],
+    "in_stock": true,
+    "rating": 4.8
+  },
+  {
+    "product_id": 3,
+    "name": "Widget Starter Kit",
+    "price": 19.99,
+    "description": "Perfect starter kit for beginners. Includes basic widget and instruction manual.",
+    "categories": ["hardware", "starter", "bundle"],
+    "in_stock": false,
+    "rating": 4.2
+  },
+  {
+    "product_id": 4,
+    "name": "Annual Service Plan",
+    "price": 99.99,
+    "description": "Complete annual maintenance and support service for all widget products.",
+    "categories": ["services", "support"],
+    "in_stock": true,
+    "rating": 4.7
+  },
+  {
+    "product_id": 5,
+    "name": "Widget Pro",
+    "price": 79.99,
+    "description": "Professional-grade widget for industrial applications. Enhanced durability and performance.",
+    "categories": ["hardware", "professional", "industrial"],
+    "in_stock": true,
+    "rating": 4.9
+  }
+]
+

@@ -1,0 +1,31 @@
+{
+  "product_id": {
+    "type": "number",
+    "searchable": true
+  },
+  "name": {
+    "type": "string",
+    "searchable": true
+  },
+  "price": {
+    "type": "number",
+    "searchable": true
+  },
+  "description": {
+    "type": "string",
+    "searchable": true
+  },
+  "categories": {
+    "type": "array",
+    "searchable": false
+  },
+  "in_stock": {
+    "type": "boolean",
+    "searchable": false
+  },
+  "rating": {
+    "type": "number",
+    "searchable": false
+  }
+}
+

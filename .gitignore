@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test files
+test_*.py
+*_test.py
+tests/
+
+# Sensitive data
+*.pdf
+*.docx
+config.json
+secrets.json
+
+# But keep example files
+!examples/*.json
+!examples/*.md
+!*.example.*
+!QUICKSTART.md
+!README.md
+
+# Logs
+*.log
+
+# Local database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+uploads/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+

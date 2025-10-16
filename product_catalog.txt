@@ -1,0 +1,10 @@
+Product Catalog
+
+Widget Pro - $79.99
+Professional-grade widget for industrial applications.
+
+Widget Standard - $49.99
+High-quality widget for everyday use.
+
+Widget Lite - $29.99
+Perfect starter widget for beginners.

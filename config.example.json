@@ -1,0 +1,10 @@
+{
+  "api_key": "VF.DM.your-api-key-here",
+  "project_id": "your-project-id-here",
+  "settings": {
+    "default_chunk_limit": 5,
+    "default_temperature": 0.1,
+    "default_synthesis": true
+  }
+}
+

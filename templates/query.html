@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Query Result - Voiceflow KB</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+      pre { background: #fafafa; padding: 12px; border-radius: 8px; overflow: auto; }
+      .nav { margin-bottom: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class="nav"><a href="/">← Back</a></div>
+    <h2>Query</h2>
+    <p><strong>Question:</strong> {{ question }}</p>
+    {% if result.get('output') %}
+      <h3>Answer</h3>
+      <p>{{ result.get('output') }}</p>
+    {% endif %}
+    {% if result.get('chunks') %}
+      <h3>Chunks ({{ result.get('chunks')|length }})</h3>
+      <ul>
+        {% for c in result.get('chunks') %}
+          <li>
+            <pre>{{ c.get('content', '') }}</pre>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </body>
+  </html>
+
+
