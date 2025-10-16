@@ -13,6 +13,8 @@
       .actions { margin-top: 12px; }
       button { padding: 8px 14px; border: none; border-radius: 6px; background: #1f74ff; color: white; cursor: pointer; }
       button.secondary { background: #555; }
+      button.auto-btn { background: #28a745; padding: 6px 12px; font-size: 13px; margin-left: 8px; }
+      button.auto-btn:hover { background: #218838; }
       .hint { color: #666; font-size: 12px; }
       .nav { margin: 12px 0; }
       .nav a { margin-right: 8px; }
@@ -62,15 +64,15 @@
     </form>
 
     <h2>Upload File</h2>
-    <form method="post" action="/upload/file" enctype="multipart/form-data">
+    <form method="post" action="/upload/file" enctype="multipart/form-data" id="fileForm">
       <label>File</label>
-      <input type="file" name="file" />
-      <label>Metadata (JSON)</label>
-      <textarea name="metadata" rows="3" placeholder='{"category":"docs"}'></textarea>
+      <input type="file" name="file" id="fileInput" />
+      <label>Metadata (JSON) <button type="button" class="auto-btn" onclick="autoFillFileMetadata()">Auto-fill</button></label>
+      <textarea name="metadata" id="fileMetadata" rows="3" placeholder='{"category":"docs"}'></textarea>
       <div class="row">
         <div>
-          <label>Max Chunk Size</label>
-          <input type="text" name="max_chunk_size" placeholder="e.g. 900" />
+          <label>Max Chunk Size <button type="button" class="auto-btn" onclick="autoFillFileChunkSize()">Auto</button></label>
+          <input type="text" name="max_chunk_size" id="fileChunkSize" placeholder="e.g. 900" />
         </div>
         <div>
           <label>&nbsp;</label>
@@ -83,17 +85,17 @@
     </form>
 
     <h2>Upload URL</h2>
-    <form method="post" action="/upload/url">
+    <form method="post" action="/upload/url" id="urlForm">
       <label>URL</label>
-      <input type="text" name="url" placeholder="https://example.com" />
+      <input type="text" name="url" id="urlInput" placeholder="https://example.com" />
       <label>Name (optional)</label>
       <input type="text" name="name" placeholder="Descriptive name" />
-      <label>Metadata (JSON)</label>
-      <textarea name="metadata" rows="3" placeholder='{"category":"ref"}'></textarea>
+      <label>Metadata (JSON) <button type="button" class="auto-btn" onclick="autoFillURLMetadata()">Auto-fill</button></label>
+      <textarea name="metadata" id="urlMetadata" rows="3" placeholder='{"category":"ref"}'></textarea>
       <div class="row">
         <div>
-          <label>Max Chunk Size</label>
-          <input type="text" name="max_chunk_size" placeholder="e.g. 900" />
+          <label>Max Chunk Size <button type="button" class="auto-btn" onclick="autoFillURLChunkSize()">Auto</button></label>
+          <input type="text" name="max_chunk_size" id="urlChunkSize" placeholder="e.g. 900" />
         </div>
         <div>
           <label>&nbsp;</label>
@@ -106,19 +108,19 @@
     </form>
 
     <h2>Upload Table</h2>
-    <form method="post" action="/upload/table">
+    <form method="post" action="/upload/table" id="tableForm">
       <label>Table Name</label>
-      <input type="text" name="name" placeholder="My Table" />
+      <input type="text" name="name" id="tableName" placeholder="My Table" />
       <label>Schema (JSON)</label>
       <textarea name="schema" rows="6" placeholder='{"id":{"type":"number","searchable":true},"name":{"type":"string","searchable":true}}'></textarea>
       <label>Items (JSON array)</label>
-      <textarea name="items" rows="6" placeholder='[{"id":1,"name":"Item A"}]'></textarea>
-      <label>Metadata (JSON)</label>
-      <textarea name="metadata" rows="3" placeholder='{"type":"dataset"}'></textarea>
+      <textarea name="items" id="tableItems" rows="6" placeholder='[{"id":1,"name":"Item A"}]'></textarea>
+      <label>Metadata (JSON) <button type="button" class="auto-btn" onclick="autoFillTableMetadata()">Auto-fill</button></label>
+      <textarea name="metadata" id="tableMetadata" rows="3" placeholder='{"type":"dataset"}'></textarea>
       <div class="row">
         <div>
-          <label>Max Chunk Size</label>
-          <input type="text" name="max_chunk_size" placeholder="e.g. 900" />
+          <label>Max Chunk Size <button type="button" class="auto-btn" onclick="autoFillTableChunkSize()">Auto</button></label>
+          <input type="text" name="max_chunk_size" id="tableChunkSize" placeholder="e.g. 900" />
         </div>
         <div>
           <label>&nbsp;</label>
@@ -129,6 +131,103 @@
         <button type="submit">Upload Table</button>
       </div>
     </form>
+    
+    <script>
+      async function autoFillFileMetadata() {
+        const fileInput = document.getElementById('fileInput');
+        if (!fileInput.files[0]) {
+          alert('Please select a file first');
+          return;
+        }
+        
+        const filename = fileInput.files[0].name;
+        const response = await fetch('/api/suggest-metadata', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({filename: filename})
+        });
+        
+        const suggestions = await response.json();
+        document.getElementById('fileMetadata').value = JSON.stringify(suggestions, null, 2);
+      }
+      
+      async function autoFillFileChunkSize() {
+        const fileInput = document.getElementById('fileInput');
+        if (!fileInput.files[0]) {
+          alert('Please select a file first');
+          return;
+        }
+        
+        const fileSize = fileInput.files[0].size;
+        const response = await fetch('/api/suggest-chunk-size', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({content_length: fileSize, document_type: 'general'})
+        });
+        
+        const result = await response.json();
+        document.getElementById('fileChunkSize').value = result.suggested_chunk_size;
+      }
+      
+      async function autoFillURLMetadata() {
+        const url = document.getElementById('urlInput').value;
+        if (!url) {
+          alert('Please enter a URL first');
+          return;
+        }
+        
+        const response = await fetch('/api/suggest-metadata', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({url: url})
+        });
+        
+        const suggestions = await response.json();
+        document.getElementById('urlMetadata').value = JSON.stringify(suggestions, null, 2);
+      }
+      
+      async function autoFillURLChunkSize() {
+        const response = await fetch('/api/suggest-chunk-size', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({document_type: 'general'})
+        });
+        
+        const result = await response.json();
+        document.getElementById('urlChunkSize').value = result.suggested_chunk_size;
+      }
+      
+      async function autoFillTableMetadata() {
+        const tableName = document.getElementById('tableName').value;
+        if (!tableName) {
+          alert('Please enter a table name first');
+          return;
+        }
+        
+        const response = await fetch('/api/suggest-metadata', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({table_name: tableName})
+        });
+        
+        const suggestions = await response.json();
+        document.getElementById('tableMetadata').value = JSON.stringify(suggestions, null, 2);
+      }
+      
+      async function autoFillTableChunkSize() {
+        const items = document.getElementById('tableItems').value;
+        let contentLength = items ? items.length : 1000;
+        
+        const response = await fetch('/api/suggest-chunk-size', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({content_length: contentLength, document_type: 'table'})
+        });
+        
+        const result = await response.json();
+        document.getElementById('tableChunkSize').value = result.suggested_chunk_size;
+      }
+    </script>
   </body>
   </html>
 

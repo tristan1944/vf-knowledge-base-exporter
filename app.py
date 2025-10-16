@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from werkzeug.utils import secure_filename
 import os
 import json
 from voiceflow_kb import VoiceflowKB
+import db
+import helpers
 
 
 app = Flask(__name__)
@@ -153,6 +155,84 @@ def upload_table():
     except Exception as e:
         flash(f'Upload error: {e}', 'error')
     return redirect(url_for('list_docs'))
+
+
+@app.route('/delete/<document_id>', methods=['POST'])
+def delete_document(document_id):
+    kb = get_kb()
+    try:
+        # Get document info before deleting
+        doc_info = kb.get_document(document_id)
+        
+        # Backup the document
+        db.backup_document(document_id, doc_info.get('data', {}))
+        
+        # Delete from Voiceflow
+        kb.delete_document(document_id)
+        
+        # Log the operation
+        db.log_operation(
+            operation_type='delete',
+            document_id=document_id,
+            document_name=doc_info.get('data', {}).get('name', 'Unknown'),
+            status='success'
+        )
+        
+        flash(f'Document {document_id} deleted and backed up successfully', 'success')
+    except Exception as e:
+        db.log_operation(
+            operation_type='delete',
+            document_id=document_id,
+            status='error',
+            error_message=str(e)
+        )
+        flash(f'Delete error: {e}', 'error')
+    
+    return redirect(url_for('list_docs'))
+
+
+@app.route('/backups')
+def view_backups():
+    deleted_docs = db.get_deleted_documents(limit=100)
+    return render_template('backups.html', deleted_docs=deleted_docs)
+
+
+@app.route('/operations')
+def view_operations():
+    operations = db.get_operations(limit=100)
+    return render_template('operations.html', operations=operations)
+
+
+@app.route('/api/suggest-metadata', methods=['POST'])
+def suggest_metadata():
+    """API endpoint to get metadata suggestions"""
+    data = request.get_json()
+    file_name = data.get('filename')
+    url = data.get('url')
+    table_name = data.get('table_name')
+    
+    suggestions = helpers.generate_metadata_suggestions(
+        file_path=file_name,
+        url=url,
+        table_name=table_name
+    )
+    
+    return jsonify(suggestions)
+
+
+@app.route('/api/suggest-chunk-size', methods=['POST'])
+def suggest_chunk_size():
+    """API endpoint to get chunk size suggestion"""
+    data = request.get_json()
+    content_length = data.get('content_length')
+    doc_type = data.get('document_type', 'general')
+    
+    suggested_size = helpers.calculate_optimal_chunk_size(
+        content_length=content_length,
+        document_type=doc_type
+    )
+    
+    return jsonify({'suggested_chunk_size': suggested_size})
 
 
 if __name__ == '__main__':
